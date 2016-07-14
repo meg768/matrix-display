@@ -6,6 +6,7 @@ var Display = function() {
 	this.text = function(text) {
 		var options = {};
 		options.fontName = 'fonts/Arial-Bold.ttf';
+		options.delay    = 20;
 		matrix.runText(text, options);
 	}
 
