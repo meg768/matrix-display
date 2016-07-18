@@ -5,9 +5,10 @@ function callback1(){
 
 	console.log('Starting callback1...');
 
-	setTimeout(callback2, 6000);
+	//setTimeout(callback2, 6000);
 	matrix.runText('callback1',{textColor: 'blue', delay:10}, function() {
 		console.log('Callback1 completed.'); // This works fine too, image does scroll
+		callback2();
 	});
 }
 function callback2() {
