@@ -17,6 +17,6 @@ schedule.scheduleJob(rule, function() {
 	callback1();
 });
 
-setTimeout(function(){
+setInterval(function(){
 	console.log(matrix.isRunning());
 }, 500);
