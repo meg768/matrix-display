@@ -9,7 +9,7 @@ matrix.runText = function(text, options, cb) {
 */
 
 function callback1() {
- 	setTimeout(callback2, 10000);
+ 	setTimeout(callback2, 6000);
 	matrix.runText('callback1',{textColor: 'blue', delay:10}, function(){
 		console.log('callback1 Text Complete');
 		//callback2();
