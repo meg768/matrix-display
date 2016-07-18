@@ -4,11 +4,11 @@ var matrix = new Matrix({width:32, height:32});
 var schedule = require('node-schedule');
 
 function callback1() {
-	matrix.runImage('../images/emoji.png');
+	matrix.display.drawPixel(0, 0, 255, 0, 0);
 }
 
 function callback2() {
-	matrix.runImage('../images/emoji.png');
+	matrix.display.drawPixel(1, 1, 0, 0, 255);
 }
 
 setTimeout(callback1, 5000);
