@@ -18,4 +18,6 @@ function callback2() {
 matrix.runText('main',{},callback1); //This works fine
 */
 
-matrix.runText('HELLO!', {});
+matrix.runText('HELLO!', {}, function(){
+	console.log('doneä');
+});
