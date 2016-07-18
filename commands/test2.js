@@ -2,16 +2,19 @@ var Matrix = require('hzeller-matrix');
 var matrix = new Matrix({width:32, height:32});
 
 function callback1(){
-//	return;
+
+	console.log('Starting callback1...');
+
 	setTimeout(callback2, 6000);
 	matrix.runText('callback1',{textColor: 'blue', delay:10}, function() {
-		console.log('Scroll Text Complete'); // This works fine too, image does scroll
+		console.log('Callback1 completed.'); // This works fine too, image does scroll
 	});
 }
 function callback2() {
-	console.log('pixel update Complete'); //callback does fire, but image does not work
-	matrix.runText('callback2',{textColor: 'green', delay:10}, function(){ //Does not fire/display anything
-		console.log('Scroll Text Complete'); //does fire
+	console.log('Starting callback2.');
+
+	matrix.runText('callback2', {}, function() { //Does not fire/display anything
+		console.log('Callback2 completed'); //does fire
 	});
 }
 
