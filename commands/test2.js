@@ -1,6 +1,6 @@
 var Matrix = require('hzeller-matrix');
 var matrix = new Matrix({width:32, height:32});
-/*
+
 function callback1(){
 	return;
 	setTimeout(callback2, 6000);
@@ -16,8 +16,9 @@ function callback2() {
 }
 
 matrix.runText('main',{},callback1); //This works fine
-*/
 
+/*
 matrix.runText('HELLO!', {}, function(){
 	console.log('doneä');
 });
+*/
