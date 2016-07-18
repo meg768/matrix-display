@@ -11,8 +11,8 @@ function callback2() {
 	matrix.runText('callback2');
 }
 
-//setTimeout(callback1, 1000);
-//setTimeout(callback2, 6000);
+setTimeout(callback1, 1000);
+setTimeout(callback2, 6000);
 
 var rule    = new schedule.RecurrenceRule();
 rule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
