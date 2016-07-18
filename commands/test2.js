@@ -4,11 +4,11 @@ var matrix = new Matrix({width:32, height:32});
 var schedule = require('node-schedule');
 
 function callback1() {
-	matrix.drawText('X');
+	matrix.runText('X');
 }
 
 function callback2() {
-	matrix.drawText('Y');
+	matrix.runText('Y');
 }
 
 //7setTimeout(callback1, 5000);
