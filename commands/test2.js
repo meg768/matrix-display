@@ -11,12 +11,12 @@ function callback2() {
 	matrix.runText('callback2');
 }
 
-setTimeout(callback1, 1000);
-setTimeout(callback2, 6000);
+//setTimeout(callback1, 1000);
+//setTimeout(callback2, 6000);
 
 var rule    = new schedule.RecurrenceRule();
-rule.hour   = 1;
-rule.minute = 0;
+rule.second = 10;
 
 schedule.scheduleJob(rule, function() {
+	console.log('...');
 });
