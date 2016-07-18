@@ -1,6 +1,11 @@
 var Matrix = require('hzeller-matrix');
 var matrix = new Matrix({width:32, height:32});
 
+matrix.runText = function(text, options, cb) {
+	console.log('runText:', text);
+	cb();
+}
+
 function callback1() {
 	// setTimeout(callback2, 6000);
 	matrix.runText('callback1',{textColor: 'blue', delay:10}, function(){
@@ -15,4 +20,5 @@ function callback2(){
 		console.log('Scroll Text Complete');
 	});
 }
+
 matrix.runText('main',{},callback1);
