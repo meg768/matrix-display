@@ -1,7 +1,7 @@
 var schedule = require('node-schedule');
 var sprintf  = require('yow').sprintf;
 var Promise  = require('bluebird');
-var Display  = require('../js/display.js');
+var display  = require('../js/display.js');
 
 var Module = module.exports = function() {
 
@@ -21,10 +21,11 @@ var Module = module.exports = function() {
 
 			if (typeof qoutes != 'Array')
 				quotes = [quotes];
-console.log(quotes[0].LastTradePriceOnly);
+
 			var text = sprintf('%s: %s', ticker, quotes[0].LastTradePriceOnly);
+
 			console.log(text);
-			Display.text(text);
+			display.text(text);
 
 		})
 
@@ -37,7 +38,6 @@ console.log(quotes[0].LastTradePriceOnly);
 
 
 	this.run = function() {
-		console.log('sadf');
 		getQuote('AAPL');
 
 	}

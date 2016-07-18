@@ -1,35 +1,18 @@
 
-var args       = require('minimist')(process.argv.slice(2));
-var sprintf    = require('yow').sprintf;
-var isString   = require('yow').isString;
-var fs         = require('fs');
-var mkdir      = require('yow').mkdir;
-var fileExists = require('yow').fileExists;
+var args         = require('minimist')(process.argv.slice(2));
+var fs           = require('fs');
+var sprintf      = require('yow').sprintf;
+var isString     = require('yow').isString;
+var mkdir        = require('yow').mkdir;
+var fileExists   = require('yow').fileExists;
+var prefixLogs   = require('yow').prefixLogs;
+var redirectLogs = require('yow').redirectLogs;
 
 var App = function() {
 
-
-	function prefixLogs() {
-			require('./js/console-prefix.js')(function() {
-			var date = new Date();
-			return sprintf('%04d-%02d-%02d %02d:%02d.%02d: ', date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
-		});
-	}
-
-	function redirectLogs() {
-
-		var logFolder = './logs';
-
-		mkdir(logFolder);
-
-		require('./js/console-redirect.js')(function() {
-			var date = new Date();
-			return sprintf('%s/%04d-%02d-%02d-%02d-%02d.log', logFolder, date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes());
-		});
-
-	}
-
 	this.run = function() {
+
+		prefixLogs();
 
 		try {
 
@@ -37,7 +20,6 @@ var App = function() {
 				var match = process.argv[2].match('--(.+)');
 				var args = require('minimist')(process.argv.slice(2));
 
-				prefixLogs();
 
 				if (args.log) {
 					delete args.log;
