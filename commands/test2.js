@@ -12,7 +12,6 @@ function callback1() {
  	//setTimeout(callback2, 6000);
 	matrix.runText('callback1',{textColor: 'blue', delay:10}, function(){
 		console.log('callback1 Text Complete');
-		callback2();
 	});
 }
 
@@ -23,7 +22,10 @@ function callback2(){
 	});
 }
 
-setTimeout(function(){
-	matrix.runText('main',{},callback1);
+function main() {
+	matrix.runText('main');
 
-}, 6000);
+}
+setTimeout(main, 100);
+setTimeout(callback1, 4000);
+setTimeout(callback2, 8000);
