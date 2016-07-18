@@ -2,7 +2,7 @@ var Matrix = require('hzeller-matrix');
 var matrix = new Matrix({width:32, height:32});
 
 function callback1(){
-	return;
+//	return;
 	setTimeout(callback2, 6000);
 	matrix.runText('callback1',{textColor: 'blue', delay:10}, function() {
 		console.log('Scroll Text Complete'); // This works fine too, image does scroll
