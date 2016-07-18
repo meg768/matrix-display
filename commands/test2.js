@@ -11,7 +11,7 @@ matrix.runText = function(text, options, cb) {
 function callback1() {
  	setTimeout(callback2, 10000);
 	matrix.runText('callback1',{textColor: 'blue', delay:10}, function(){
-		console.log('Scroll Text Complete');
+		console.log('callback1 Text Complete');
 		//callback2();
 	});
 }
@@ -19,7 +19,7 @@ function callback1() {
 function callback2(){
 	console.log('pixel update Complete');
 	matrix.runText('callback2',{textColor: 'green', delay:10}, function(){
-		console.log('Scroll Text Complete');
+		console.log('callback2 Text Complete');
 	});
 }
 
