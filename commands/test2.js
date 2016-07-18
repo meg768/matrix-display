@@ -23,4 +23,7 @@ function callback2(){
 	});
 }
 
-matrix.runText('main',{},callback1);
+setTimeout(function(){
+	matrix.runText('main',{},callback1);
+
+}, 6000);
