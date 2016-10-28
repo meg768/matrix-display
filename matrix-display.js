@@ -79,6 +79,8 @@ var App = function() {
 	console.log('Connecting to %s...', url);
 
 	socket.on('text', function(options) {
+		console.log('Text message');
+		console.log(options);
 		_queue.push({message:'text', options:options});
 	});
 
