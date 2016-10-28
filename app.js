@@ -17,10 +17,10 @@ var App = function() {
 
 	cmd.version('1.0.0');
 	cmd.option('-l --log', 'redirect logs to file');
-	cmd.option('-h --host <host>', 'connect to specified server', 'localhost');
+	cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
 	cmd.option('-p --port <port>', 'connect to specified port', 3001);
 	cmd.parse(process.argv);
-/*
+
 	prefixLogs();
 
 	if (cmd.log) {
@@ -38,7 +38,14 @@ var App = function() {
 	console.log('Connecting to %s...', url);
 
 	socket.on('text', function(args) {
-		matrix.runText(args.text, args);
+
+		var text = args.text ? args.text : 'ABC 123';
+		var options = {};
+
+		if (args.fontName)
+			options.fontName = sprintf('%s/%s.ttf', __dirname, args.fontName);
+
+		matrix.runText(text, options);
 	});
 
 
@@ -51,11 +58,8 @@ var App = function() {
 		console.log('Registering matrix-display...');
 		socket.emit('register', options);
 	})
-*/
 
-	var options = {};
-	options.fontName = __dirname + '/fonts/Arial-Bold.ttf';
-	matrix.runText('Ready', options);
+	matrix.runText('Ready');
 
 
 };
