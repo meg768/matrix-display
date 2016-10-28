@@ -37,22 +37,28 @@ var App = function() {
 
 	console.log('Connecting to %s...', url);
 
-	socket.on('text', function(args) {
+	socket.on('text', function(options) {
 
-		var text = args.text ? args.text : 'ABC 123';
-		var options = {};
+		var text = options.text ? options.text : 'ABC 123';
 
-		if (args.fontName)
-			options.fontName = sprintf('%s/%s.ttf', __dirname, args.fontName);
+		if (options.fontName)
+			options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
 
 		matrix.runText(text, options);
 	});
 
+	socket.on('rain', function(options) {
+		matrix.runRain(options);
+	});
+
+	socket.on('perlin', function(options) {
+		matrix.runPerlin(options);
+	});
 
 	socket.on('hello', function(data) {
 		var options = {};
 		options.service   = 'matrix-display';
-		options.messages  = ['text'];
+		options.messages  = ['text', 'rain', 'perlin'];
 		options.events    = [];
 
 		console.log('Registering matrix-display...');
