@@ -18,7 +18,7 @@ var App = function() {
 	cmd.version('1.0.0');
 	cmd.option('-l --log', 'redirect logs to file');
 	cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
-	cmd.option('-p --port <port>', 'connect to specified port', 3001);
+	cmd.option('-p --port <port>', 'connect to specified port (3000)', 3000);
 	cmd.parse(process.argv);
 
 	var _queue = new Queue();
@@ -73,7 +73,7 @@ var App = function() {
 		redirectLogs(Path.join(path, name));
 	}
 
-	var url = sprintf('http://%s:%d/matrix-display', cmd.host, cmd.port);
+	var url = sprintf('http://%s:%d', cmd.host, cmd.port);
 	var socket = require('socket.io-client')(url);
 
 	console.log('Connecting to %s...', url);
