@@ -17,7 +17,7 @@ var App = function() {
 	var socket = require('socket.io-client')('http://app-o.se:3000');
 
 
-	socket.emit('text', {text:'HEJ'});
+	socket.emit('perlin', {duration:10});
 
 };
 
