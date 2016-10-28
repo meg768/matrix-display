@@ -14,7 +14,7 @@ var App = function() {
 	prefixLogs();
 
 
-	var socket = require('socket.io-client')('http://app-o.se:3000/matrix-displayX');
+	var socket = require('socket.io-client')('http://app-o.se:3000/matrix-display');
 
 
 	socket.emit('text', {text:'Magnus', fontSize:30, textColor:'blue'});
