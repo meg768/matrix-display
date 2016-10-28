@@ -10,7 +10,7 @@ var prefixLogs = require('yow').prefixLogs;
 var cmd = require('commander');
 var Matrix = require('hzeller-matrix');
 var matrix = new Matrix({width:32, height:32});
-
+var Queue = require('./scripts/queue.js');
 
 
 var App = function() {
@@ -20,6 +20,44 @@ var App = function() {
 	cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
 	cmd.option('-p --port <port>', 'connect to specified port', 3001);
 	cmd.parse(process.argv);
+
+	var _queue = new Queue();
+
+	_queue.on('idle', function() {
+		console.log('Queue empty, nothing to do.');
+	});
+
+	_queue.on('process', function(item, callback) {
+
+		var message = item.message;
+		var options = item.options;
+
+		switch (message) {
+			case 'text': {
+				var text = options.text ? options.text : 'ABC 123';
+
+				if (options.fontName)
+					options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
+
+				matrix.runText(text, options, callback);
+				break;
+			}
+			case 'perlin': {
+				matrix.runPerlin(options, callback);
+				break;
+			}
+
+			case 'rain': {
+				matrix.runPerlin(options, callback);
+				break;
+			}
+
+			default: {
+				console.log('Invalid message: ', message);
+				callback();
+			}
+		}
+	});
 
 	prefixLogs();
 
@@ -38,21 +76,15 @@ var App = function() {
 	console.log('Connecting to %s...', url);
 
 	socket.on('text', function(options) {
-
-		var text = options.text ? options.text : 'ABC 123';
-
-		if (options.fontName)
-			options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
-
-		matrix.runText(text, options);
+		_queue.push({message:'text', options:options});
 	});
 
 	socket.on('rain', function(options) {
-		matrix.runRain(options);
+		_queue.push({message:'rain', options:options});
 	});
 
 	socket.on('perlin', function(options) {
-		matrix.runPerlin(options);
+		_queue.push({message:'perlin', options:options});
 	});
 
 	socket.on('hello', function(data) {
