@@ -16,7 +16,6 @@ var App = function() {
 
 	var socket = require('socket.io-client')('http://app-o.se:3000');
 
-	console.log('Connecting to %s...', url);
 
 	socket.emit('text', {text:'HEJ'});
 
