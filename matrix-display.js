@@ -39,7 +39,10 @@ var App = function() {
 				if (options.fontName)
 					options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
 
-				matrix.runText(text, options, callback);
+				matrix.runText(text, options, function() {
+					console.log('Done with text.');
+					callback();
+				});
 				break;
 			}
 			case 'perlin': {

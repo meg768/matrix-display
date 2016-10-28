@@ -17,7 +17,10 @@ var App = function() {
 	var socket = require('socket.io-client')('http://app-o.se:3000');
 
 
-	socket.emit('text', {text:'Magnus Egelberg', fontSize:30, textColor:'blue'});
+	socket.emit('text', {text:'Magnus', fontSize:30, textColor:'blue'});
+//	socket.emit('text', {text:'Nyheter från Google', textColor:'green'});
+//	socket.emit('rain', {duration:10});
+//	socket.emit('text', {text:'Klar!'});
 };
 
 new App();
