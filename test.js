@@ -18,6 +18,7 @@ var App = function() {
 
 
 	socket.emit('text', {text:'Magnus', fontSize:30, textColor:'blue'});
+	socket.emit('text', {text:'Egelberg'});
 //	socket.emit('text', {text:'Nyheter från Google', textColor:'green'});
 //	socket.emit('rain', {duration:10});
 //	socket.emit('text', {text:'Klar!'});
