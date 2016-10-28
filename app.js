@@ -11,16 +11,7 @@ var cmd = require('commander');
 var Matrix = require('hzeller-matrix');
 var matrix = new Matrix({width:32, height:32});
 
-var Display = function() {
 
-	this.text = function(text) {
-		var options = {};
-		options.fontName = 'fonts/Arial-Bold.ttf';
-		options.delay    = 20;
-		matrix.runText(text, options);
-	}
-
-};
 
 var App = function() {
 
@@ -29,7 +20,7 @@ var App = function() {
 	cmd.option('-h --host <host>', 'connect to specified server', 'localhost');
 	cmd.option('-p --port <port>', 'connect to specified port', 3001);
 	cmd.parse(process.argv);
-
+/*
 	prefixLogs();
 
 	if (cmd.log) {
@@ -60,8 +51,12 @@ var App = function() {
 		console.log('Registering matrix-display...');
 		socket.emit('register', options);
 	})
-	
-	matrix.runText('Ready!');
+*/
+
+	var options = {};
+	options.fontName = __dirname + '/fonts/Arial-Bold.ttf';
+	options.delay    = 20;
+	matrix.runText('Ready', options);
 
 
 };
