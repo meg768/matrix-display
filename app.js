@@ -55,7 +55,7 @@ var App = function() {
 
 	var options = {};
 	options.fontName = __dirname + '/fonts/Arial-Bold.ttf';
-	options.delay    = 1;
+	options.delay    = 8;
 	matrix.runText('Ready', options);
 
 
