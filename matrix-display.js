@@ -57,9 +57,19 @@ var App = function() {
 					if (!options.id || options.id < 1 || options.id > 846)
 						options.id = 704;
 
-					var image = sprintf('%s/images/emojis/%d.png', __dirname, options.id, options.id);
-
+					var image = sprintf('%s/images/emojis/%d.png', __dirname, options.id);
 					_matrix.runImage(image, options, callback);
+					
+					break;
+				}
+
+				case 'animation': {
+					if (!options.name)
+						options.name = 'pacman';
+
+					var image = sprintf('%s/animations/%s.gif', __dirname, options.name);
+					_matrix.runAnimation(image, options, callback);
+
 					break;
 				}
 
@@ -105,6 +115,10 @@ var App = function() {
 	socket.on('clear', function() {
 		_queue.reset();
 		_queue.push({message:'text', options:{text:' '}});
+	});
+
+	socket.on('animation', function(options) {
+		_queue.push({message:'animation', options:options});
 	});
 
 	socket.on('emoji', function(options) {
