@@ -114,7 +114,7 @@ var App = function() {
 
 	socket.on('clear', function() {
 		_queue.reset();
-		_matrix.runText(' ');
+		_matrix.stop();
 	});
 
 	socket.on('animation', function(options) {
