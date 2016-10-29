@@ -130,8 +130,9 @@ var App = function() {
 				}
 			}
 
-			return queue;
 		});
+
+		return queue;
 
 	}
 
