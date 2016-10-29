@@ -182,6 +182,12 @@ var App = function() {
 
 		console.log('Connecting to %s...', url);
 
+		socket.on('stop', function() {
+			_matrix.stop(function() {
+				_queue = createQueue();
+			});
+		});
+		
 		socket.on('text', function(options) {
 			runMatrix('text', options);
 		});
