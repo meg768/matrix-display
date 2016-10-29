@@ -131,7 +131,7 @@ var App = function() {
 	function runMatrix(message, options) {
 		if (options.important) {
 			_matrix.stop(function() {
-				_queue.reset();
+				_queue = new Queue();
 				_queue.push({message:message, options:options});
 
 			});
