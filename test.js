@@ -16,6 +16,10 @@ var App = function() {
 	var socket = require('socket.io-client')('http://app-o.se:3000/matrix-display');
 
 
+	socket.on('hello', function() {
+		console.log('Hello');
+	});
+
 	socket.emit('text', {text:'Magnus', fontSize:30, textColor:'blue'});
 	socket.emit('text', {text:'Egelberg'});
 	socket.emit('text', {text:'Nyheter från Google', textColor:'green'});
