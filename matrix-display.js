@@ -81,7 +81,7 @@ var App = function() {
 		redirectLogs(Path.join(path, name));
 	}
 
-	var url = sprintf('http://%s:%d', cmd.host, cmd.port);
+	var url = sprintf('http://%s:%d/matrix-display-provider', cmd.host, cmd.port);
 	var socket = require('socket.io-client')(url);
 
 	console.log('Connecting to %s...', url);
@@ -101,6 +101,8 @@ var App = function() {
 	});
 
 	socket.on('hello', function(data) {
+		console.log('hello');
+		/*
 		var options = {};
 		options.service   = 'matrix-display';
 		options.messages  = ['text', 'rain', 'perlin'];
@@ -108,6 +110,7 @@ var App = function() {
 
 		console.log('Registering matrix-display...');
 		socket.emit('register', options);
+		*/
 	})
 
 	//matrix.runText('Ready');
