@@ -59,7 +59,7 @@ var App = function() {
 	cmd.option('-f --fakeit', 'do not access matrix hardware', false);
 	cmd.parse(process.argv);
 
-	var _queue = new Queue();
+	var _queue  = undefined;
 	var _matrix = undefined;
 
 	if (!cmd.fakeit)
@@ -67,71 +67,82 @@ var App = function() {
 	else
 		_matrix = new FakeMatrix();
 
-	_queue.on('idle', function() {
-		console.log('Queue empty, nothing to do.');
-	});
+	function createQueue() {
+		var queue = new Queue();
 
-	_queue.on('process', function(item, callback) {
+		queue.on('idle', function() {
+			console.log('Queue empty, nothing to do.');
+		});
 
-		var message = item.message;
-		var options = item.options;
+		queue.on('process', function(item, callback) {
 
-		console.log('Running', message, JSON.stringify(options));
+			var message = item.message;
+			var options = item.options;
 
-		switch (message) {
-			case 'text': {
-				var text = options.text ? options.text : 'ABC 123';
+			console.log('Running', message, JSON.stringify(options));
 
-				if (options.fontName)
-					options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
+			switch (message) {
+				case 'text': {
+					var text = options.text ? options.text : 'ABC 123';
 
-				_matrix.runText(text, options, function() {
-					console.log('Done with text.');
+					if (options.fontName)
+						options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
+
+					_matrix.runText(text, options, function() {
+						console.log('Done with text.');
+						callback();
+					});
+					break;
+				}
+				case 'perlin': {
+					_matrix.runPerlin(options, callback);
+					break;
+				}
+
+				case 'emoji': {
+					if (!options.id || options.id < 1 || options.id > 846)
+						options.id = 704;
+
+					var image = sprintf('%s/images/emojis/%d.png', __dirname, options.id);
+					_matrix.runImage(image, options, callback);
+
+					break;
+				}
+
+				case 'animation': {
+					if (!options.name)
+						options.name = 'pacman';
+
+					var image = sprintf('%s/animations/%s.gif', __dirname, options.name);
+					_matrix.runAnimation(image, options, callback);
+
+					break;
+				}
+
+				case 'rain': {
+					_matrix.runPerlin(options, callback);
+					break;
+				}
+
+				default: {
+					console.log('Invalid message: ', message);
 					callback();
-				});
-				break;
-			}
-			case 'perlin': {
-				_matrix.runPerlin(options, callback);
-				break;
+				}
 			}
 
-			case 'emoji': {
-				if (!options.id || options.id < 1 || options.id > 846)
-					options.id = 704;
+			return queue;
+		});
 
-				var image = sprintf('%s/images/emojis/%d.png', __dirname, options.id);
-				_matrix.runImage(image, options, callback);
-
-				break;
-			}
-
-			case 'animation': {
-				if (!options.name)
-					options.name = 'pacman';
-
-				var image = sprintf('%s/animations/%s.gif', __dirname, options.name);
-				_matrix.runAnimation(image, options, callback);
-
-				break;
-			}
-
-			case 'rain': {
-				_matrix.runPerlin(options, callback);
-				break;
-			}
-
-			default: {
-				console.log('Invalid message: ', message);
-				callback();
-			}
-		}
-	});
+	}
 
 	function runMatrix(message, options) {
+
+		if (_queue == undefined)
+			_queue = createQueue();
+
 		if (options.important) {
 			_matrix.stop(function() {
-				_queue = new Queue();
+				_queue = createQueue();
 				_queue.push({message:message, options:options});
 
 			});
