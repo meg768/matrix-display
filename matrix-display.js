@@ -118,9 +118,11 @@ var App = function() {
 		console.log('hello');
 	})
 
-	if (_matrix)
+	if (_matrix != undefined)
 		_matrix.runText('Ready');
 
+	console.log('Started.');
+	
 };
 
 new App();
