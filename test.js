@@ -13,33 +13,38 @@ var App = function() {
 
 	prefixLogs();
 
-	var socket = require('socket.io-client')('http://app-o.se:3000/matrix-display');
+	var matrix = require('socket.io-client')('http://app-o.se:3000/matrix-display');
+	var tellstick = require('socket.io-client')('http://app-o.se:3000/tellstick');
 	var counter = 0;
 
 	function runText() {
 		var text = sprintf('%d', ++counter);
 		console.log(text);
-		socket.emit('text', {text:text, fontSize:24, textColor:'blue'});
+		matrix.emit('text', {text:text, fontSize:24, textColor:'blue'});
 
 	}
-	socket.on('connection', function() {
-		console.log('Connected');
+
+	tellstick.on('tellstick', function(device) {
+		if (device.name == 'RV-01') {
+			matrix.emit('text', {text:'Movement', fontSize:24, textColor:'red'});
+		}
+
 	});
 
-	socket.on('disconnect', function() {
+	matrix.on('disconnect', function() {
 		console.log('Disconnected');
 	});
 
-	socket.on('hello', function() {
+	matrix.on('hello', function() {
 
 		console.log('Hello!');
 	});
-	socket.on('helloX', function() {
+	matrix.on('helloX', function() {
 
 		console.log('HelloX!');
 	});
 
-	setInterval(runText, 3000);
+	setInterval(runText, 6000);
 }
 
 new App();
