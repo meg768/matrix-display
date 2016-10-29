@@ -22,6 +22,10 @@ var App = function() {
 		socket.emit('text', {text:text, fontSize:24, textColor:'blue'});
 
 	}
+	socket.on('connection', function() {
+		console.log('Connected');
+	});
+
 	socket.on('disconnect', function() {
 		console.log('Disconnected');
 	});
