@@ -31,6 +31,10 @@ var App = function() {
 
 	});
 
+	matrix.on('connect', function() {
+		console.log('Connected');
+	});
+
 	matrix.on('disconnect', function() {
 		console.log('Disconnected');
 	});
