@@ -113,7 +113,8 @@ var App = function() {
 		*/
 	})
 
-	//matrix.runText('Ready');
+	if (_matrix)
+		_matrix.runText('Ready');
 
 
 };
