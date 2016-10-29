@@ -20,7 +20,7 @@ var FakeMatrix = function() {
 	this.isRunning = function() {
 		return false;
 	}
-	
+
 	this.stop = function() {
 		console.log('stop');
 	};
@@ -211,6 +211,8 @@ var App = function() {
 		console.log('Started.');
 
 	}
+
+	run();
 
 };
 
