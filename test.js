@@ -34,6 +34,10 @@ var App = function() {
 
 		console.log('Hello!');
 	});
+	socket.on('helloX', function() {
+
+		console.log('HelloX!');
+	});
 
 	setInterval(runText, 3000);
 }
