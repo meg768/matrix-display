@@ -102,6 +102,10 @@ var App = function() {
 		_queue.push({message:'text', options:options});
 	});
 
+	socket.on('clear', function() {
+		_queue.push({message:' ', options:{}});
+	});
+
 	socket.on('emoji', function(options) {
 		_queue.push({message:'emoji', options:options});
 	});
@@ -122,7 +126,7 @@ var App = function() {
 		_matrix.runText('Ready');
 
 	console.log('Started.');
-	
+
 };
 
 new App();
