@@ -42,19 +42,19 @@ var App = function() {
 					if (options.fontName)
 						options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
 
-					matrix.runText(text, options, function() {
+					_matrix.runText(text, options, function() {
 						console.log('Done with text.');
 						callback();
 					});
 					break;
 				}
 				case 'perlin': {
-					matrix.runPerlin(options, callback);
+					_matrix.runPerlin(options, callback);
 					break;
 				}
 
 				case 'rain': {
-					matrix.runPerlin(options, callback);
+					_matrix.runPerlin(options, callback);
 					break;
 				}
 
