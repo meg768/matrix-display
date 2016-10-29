@@ -53,6 +53,16 @@ var App = function() {
 					break;
 				}
 
+				case 'emoji': {
+					if (!options.id || options.id < 1 || options.id > 846)
+						options.id = 704;
+
+					var image = sprintf('%s/images/emojis/%d.png', __dirname, options.id, options.id);
+
+					_matrix.runImage(image, options, callback);
+					break;
+				}
+
 				case 'rain': {
 					_matrix.runPerlin(options, callback);
 					break;
@@ -81,7 +91,7 @@ var App = function() {
 		redirectLogs(Path.join(path, name));
 	}
 
-	var url = sprintf('http://%s:%d/matrix-display-provider', cmd.host, cmd.port);
+	var url = sprintf('http://%s:%d/provider', cmd.host, cmd.port);
 	var socket = require('socket.io-client')(url);
 
 	console.log('Connecting to %s...', url);
@@ -90,6 +100,10 @@ var App = function() {
 		console.log('Text message');
 		console.log(options);
 		_queue.push({message:'text', options:options});
+	});
+
+	socket.on('emoji', function(options) {
+		_queue.push({message:'emoji', options:options});
 	});
 
 	socket.on('rain', function(options) {
@@ -102,20 +116,10 @@ var App = function() {
 
 	socket.on('hello', function(data) {
 		console.log('hello');
-		/*
-		var options = {};
-		options.service   = 'matrix-display';
-		options.messages  = ['text', 'rain', 'perlin'];
-		options.events    = [];
-
-		console.log('Registering matrix-display...');
-		socket.emit('register', options);
-		*/
 	})
 
 	if (_matrix)
 		_matrix.runText('Ready');
-
 
 };
 
