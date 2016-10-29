@@ -20,8 +20,8 @@ var App = function() {
 	cmd.parse(process.argv);
 
 	var _queue = new Queue();
-	//var _matrix = new Matrix({width:32, height:32});
-	var _matrix = undefined;
+	var _matrix = new Matrix({width:32, height:32});
+	//var _matrix = undefined;
 
 	_queue.on('idle', function() {
 		console.log('Queue empty, nothing to do.');
