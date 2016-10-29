@@ -145,7 +145,7 @@ var App = function() {
 
 			});
 		}
-		else if (priority == 'low') {
+		else if (options.priority == 'low') {
 			if (!_matrix.isRunning()) {
 				_queue.push({message:message, options:options});
 			}
