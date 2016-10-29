@@ -11,17 +11,37 @@ var cmd = require('commander');
 var Matrix = require('hzeller-matrix');
 var Queue = require('./scripts/queue.js');
 
+var FakeMatrix = function() {
+
+	function fake() {
+
+	};
+
+	this.stop         = fake;
+	this.runText      = fake;
+	this.runImage     = fake;
+	this.runAnimation = fake;
+	this.runRain      = fake;
+	this.runPerlin    = fake;
+};
+
+
 var App = function() {
 
 	cmd.version('1.0.0');
 	cmd.option('-l --log', 'redirect logs to file');
 	cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
 	cmd.option('-p --port <port>', 'connect to specified port (3000)', 3000);
+	cmd.option('-f --fakeit', 'do not access matrix hardware', false);
 	cmd.parse(process.argv);
 
 	var _queue = new Queue();
-	var _matrix = new Matrix({width:32, height:32});
-	//var _matrix = undefined;
+	var _matrix = undefined;
+
+	if (!cmd.fakeit)
+		_matrix = new Matrix({width:32, height:32});
+	else
+		_matrix = new FakeMatrix();
 
 	_queue.on('idle', function() {
 		console.log('Queue empty, nothing to do.');
@@ -34,59 +54,53 @@ var App = function() {
 
 		console.log('Running', message, JSON.stringify(options));
 
-		if (_matrix) {
-			switch (message) {
-				case 'text': {
-					var text = options.text ? options.text : 'ABC 123';
+		switch (message) {
+			case 'text': {
+				var text = options.text ? options.text : 'ABC 123';
 
-					if (options.fontName)
-						options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
+				if (options.fontName)
+					options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
 
-					_matrix.runText(text, options, function() {
-						console.log('Done with text.');
-						callback();
-					});
-					break;
-				}
-				case 'perlin': {
-					_matrix.runPerlin(options, callback);
-					break;
-				}
-
-				case 'emoji': {
-					if (!options.id || options.id < 1 || options.id > 846)
-						options.id = 704;
-
-					var image = sprintf('%s/images/emojis/%d.png', __dirname, options.id);
-					_matrix.runImage(image, options, callback);
-
-					break;
-				}
-
-				case 'animation': {
-					if (!options.name)
-						options.name = 'pacman';
-
-					var image = sprintf('%s/animations/%s.gif', __dirname, options.name);
-					_matrix.runAnimation(image, options, callback);
-
-					break;
-				}
-
-				case 'rain': {
-					_matrix.runPerlin(options, callback);
-					break;
-				}
-
-				default: {
-					console.log('Invalid message: ', message);
+				_matrix.runText(text, options, function() {
+					console.log('Done with text.');
 					callback();
-				}
+				});
+				break;
+			}
+			case 'perlin': {
+				_matrix.runPerlin(options, callback);
+				break;
 			}
 
-		}
-		else {
-			setTimeout(callback, 1000);
+			case 'emoji': {
+				if (!options.id || options.id < 1 || options.id > 846)
+					options.id = 704;
+
+				var image = sprintf('%s/images/emojis/%d.png', __dirname, options.id);
+				_matrix.runImage(image, options, callback);
+
+				break;
+			}
+
+			case 'animation': {
+				if (!options.name)
+					options.name = 'pacman';
+
+				var image = sprintf('%s/animations/%s.gif', __dirname, options.name);
+				_matrix.runAnimation(image, options, callback);
+
+				break;
+			}
+
+			case 'rain': {
+				_matrix.runPerlin(options, callback);
+				break;
+			}
+
+			default: {
+				console.log('Invalid message: ', message);
+				callback();
+			}
 		}
 	});
 
@@ -115,15 +129,11 @@ var App = function() {
 
 	console.log('Connecting to %s...', url);
 
-	socket.on('text', function(options) {
-		console.log('Text message');
-		console.log(options);
-		runMatrix({message:'text', options:options});
+	socket.on('stop', function() {
 	});
 
-	socket.on('stop', function() {
-//		_queue.reset();
-//		_matrix.stop();
+	socket.on('text', function(options) {
+		runMatrix({message:'text', options:options});
 	});
 
 	socket.on('animation', function(options) {
@@ -146,8 +156,7 @@ var App = function() {
 		console.log('hello');
 	})
 
-	if (_matrix != undefined)
-		_matrix.runText('Ready');
+	_matrix.runText('Ready');
 
 	console.log('Started.');
 
