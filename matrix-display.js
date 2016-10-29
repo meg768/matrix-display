@@ -103,7 +103,7 @@ var App = function() {
 	});
 
 	socket.on('clear', function() {
-		_queue,reset();
+		_queue.reset();
 		_queue.push({message:'text', options:{text:' '}});
 	});
 
