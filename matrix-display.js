@@ -17,12 +17,36 @@ var FakeMatrix = function() {
 
 	};
 
-	this.stop         = fake;
-	this.runText      = fake;
-	this.runImage     = fake;
-	this.runAnimation = fake;
-	this.runRain      = fake;
-	this.runPerlin    = fake;
+	this.stop = function() {
+		console.log('stop');
+	};
+
+	this.runText = function(text, options, callback) {
+		console.log('runText:', text, JSON.stringify(options));
+		setTimeout(callback, 1000);
+	};
+
+
+	this.runImage = function(image, options, callback) {
+		console.log('runImage:', image, JSON.stringify(options));
+		setTimeout(callback, 1000);
+	};
+
+	this.runAnimation = function(animation, options, callback) {
+		console.log('runAnimation:', animation, JSON.stringify(options));
+		setTimeout(callback, 1000);
+	};
+
+	this.runRain = function(options, callback) {
+		console.log('runRain:', JSON.stringify(options));
+		setTimeout(callback, 1000);
+	};
+
+	this.runPerlin = function(options, callback) {
+		console.log('runPerlin:', JSON.stringify(options));
+		setTimeout(callback, 1000);
+	};
+
 };
 
 
