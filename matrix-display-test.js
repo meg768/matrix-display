@@ -26,7 +26,8 @@ var App = function() {
 
 	tellstick.on('tellstick', function(device) {
 		if (device.name == 'RV-01') {
-			matrix.emit('text', {text:'Movement', fontSize:24, textColor:'red'});
+			//matrix.emit('text', {text:'Movement', fontSize:24, textColor:'red'});
+			matrix.emit('clear', {});
 		}
 
 	});
