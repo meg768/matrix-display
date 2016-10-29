@@ -103,7 +103,8 @@ var App = function() {
 	});
 
 	socket.on('clear', function() {
-		_queue.push({message:' ', options:{}});
+		_queue,reset();
+		_queue.push({message:'text', options:{text:' '}});
 	});
 
 	socket.on('emoji', function(options) {

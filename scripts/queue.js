@@ -37,6 +37,10 @@ var Module = module.exports = function() {
 		}
 	}
 
+	_this.reset = function() {
+		_queue = [];
+	}
+
 	_this.empty = function() {
 		return _queue.length == 0;
 	}
