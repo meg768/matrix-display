@@ -17,11 +17,12 @@ var App = function() {
 	var counter = 0;
 
 	function runText() {
-		socket.emit('text', {text:'Magnus', fontSize:24, textColor:'blue'});
+		socket.emit('text', {text:sprintf('%d', ++counter), fontSize:24, textColor:'blue'});
 
 	}
 	socket.on('hello', function() {
-		console.log(sprintf('%d', ++counter));
+
+		console.log('Hello!');
 	});
 
 	setInterval(runText, 3000);
