@@ -59,7 +59,7 @@ var App = function() {
 
 					var image = sprintf('%s/images/emojis/%d.png', __dirname, options.id);
 					_matrix.runImage(image, options, callback);
-					
+
 					break;
 				}
 
@@ -113,8 +113,8 @@ var App = function() {
 	});
 
 	socket.on('clear', function() {
-		_queue.reset();
-		_queue.push({message:'text', options:{text:' '}});
+		var _queue = new Queue();
+		_matrix.runText(' ');
 	});
 
 	socket.on('animation', function(options) {
