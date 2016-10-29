@@ -112,7 +112,7 @@ var App = function() {
 		_queue.push({message:'text', options:options});
 	});
 
-	socket.on('clear', function() {
+	socket.on('stop', function() {
 		_queue.reset();
 		_matrix.stop();
 	});
