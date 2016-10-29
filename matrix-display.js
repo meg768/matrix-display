@@ -17,6 +17,10 @@ var FakeMatrix = function() {
 
 	};
 
+	this.isRunning = function() {
+		return false;
+	}
+	
 	this.stop = function() {
 		console.log('stop');
 	};
@@ -52,20 +56,10 @@ var FakeMatrix = function() {
 
 var App = function() {
 
-	cmd.version('1.0.0');
-	cmd.option('-l --log', 'redirect logs to file');
-	cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
-	cmd.option('-p --port <port>', 'connect to specified port (3000)', 3000);
-	cmd.option('-f --fakeit', 'do not access matrix hardware', false);
-	cmd.parse(process.argv);
-
 	var _queue  = undefined;
 	var _matrix = undefined;
 
-	if (!cmd.fakeit)
-		_matrix = new Matrix({width:32, height:32});
-	else
-		_matrix = new FakeMatrix();
+
 
 	function createQueue() {
 		var queue = new Queue();
@@ -138,63 +132,85 @@ var App = function() {
 
 	function runMatrix(message, options) {
 
+		if (options == undefined)
+			options = {};
+
 		if (_queue == undefined)
 			_queue = createQueue();
 
-		if (options.important) {
+		if (options.priority == 'high') {
 			_matrix.stop(function() {
 				_queue = createQueue();
 				_queue.push({message:message, options:options});
 
 			});
 		}
+		else if (priority == 'low') {
+			if (!_matrix.isRunning()) {
+				_queue.push({message:message, options:options});
+			}
+		}
 		else
 			_queue.push({message:message, options:options});
 	}
 
-	prefixLogs();
+	function run() {
 
-	if (cmd.log) {
-		var date = new Date();
-		var path = sprintf('%s/logs', __dirname);
-		var name = sprintf('%04d-%02d-%02d-%02d-%02d-%02d.log', date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+		cmd.version('1.0.0');
+		cmd.option('-l --log', 'redirect logs to file');
+		cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
+		cmd.option('-p --port <port>', 'connect to specified port (3000)', 3000);
+		cmd.option('-f --fakeit', 'do not access matrix hardware', false);
+		cmd.parse(process.argv);
 
-		mkpath(path);
-		redirectLogs(Path.join(path, name));
+		prefixLogs();
+
+		if (cmd.log) {
+			var date = new Date();
+			var path = sprintf('%s/logs', __dirname);
+			var name = sprintf('%04d-%02d-%02d-%02d-%02d-%02d.log', date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+
+			mkpath(path);
+			redirectLogs(Path.join(path, name));
+		}
+
+		_queue  = createQueue();
+		_matrix = cmd.fakeit ? new FakeMatrix() : new Matrix({width:32, height:32});
+
+		var url = sprintf('http://%s:%d/matrix-display-provider', cmd.host, cmd.port);
+		var socket = require('socket.io-client')(url);
+
+		console.log('Connecting to %s...', url);
+
+		socket.on('text', function(options) {
+			runMatrix('text', options);
+		});
+
+		socket.on('animation', function(options) {
+			runMatrix('animation', options);
+		});
+
+		socket.on('emoji', function(options) {
+			runMatrix('emoji', options);
+		});
+
+		socket.on('rain', function(options) {
+			runMatrix('rain', options);
+		});
+
+		socket.on('perlin', function(options) {
+			runMatrix('perlin', options);
+		});
+
+		socket.on('hello', function(data) {
+			console.log('hello');
+		})
+
+		_matrix.runText('Ready');
+
+		console.log('Started.');
+
 	}
-
-	var url = sprintf('http://%s:%d/matrix-display-provider', cmd.host, cmd.port);
-	var socket = require('socket.io-client')(url);
-
-	console.log('Connecting to %s...', url);
-
-	socket.on('text', function(options) {
-		runMatrix('text', options);
-	});
-
-	socket.on('animation', function(options) {
-		runMatrix('animation', options);
-	});
-
-	socket.on('emoji', function(options) {
-		runMatrix('emoji', options);
-	});
-
-	socket.on('rain', function(options) {
-		runMatrix('rain', options);
-	});
-
-	socket.on('perlin', function(options) {
-		runMatrix('perlin', options);
-	});
-
-	socket.on('hello', function(data) {
-		console.log('hello');
-	})
-
-	_matrix.runText('Ready');
-
-	console.log('Started.');
 
 };
 
