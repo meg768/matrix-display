@@ -15,7 +15,7 @@ var App = function() {
 
 	cmd.version('1.0.0');
 	cmd.option('-l --log', 'redirect logs to file');
-	cmd.option('-h --host <host>', 'connect to specified server', 'localhost');
+	cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
 	cmd.option('-p --port <port>', 'connect to specified port (3000)', 3000);
 	cmd.parse(process.argv);
 
