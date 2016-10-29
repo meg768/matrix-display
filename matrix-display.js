@@ -113,7 +113,7 @@ var App = function() {
 	});
 
 	socket.on('clear', function() {
-		var _queue = new Queue();
+		_queue.reset();
 		_matrix.runText(' ');
 	});
 
