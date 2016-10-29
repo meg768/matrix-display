@@ -14,16 +14,17 @@ var App = function() {
 	prefixLogs();
 
 	var socket = require('socket.io-client')('http://app-o.se:3000/matrix-display');
+	var counter = 0;
 
+	function runText() {
+		socket.emit('text', {text:'Magnus', fontSize:24, textColor:'blue'});
 
+	}
 	socket.on('hello', function() {
-		console.log('Hello');
+		console.log(sprintf('%d', ++counter));
 	});
 
-	socket.emit('text', {text:'Magnus', fontSize:30, textColor:'blue'});
-	socket.emit('text', {text:'Egelberg'});
-	socket.emit('text', {text:'Nyheter från Google', textColor:'green'});
-	socket.emit('text', {text:'Klar!'});
+	setInterval(runText, 3000);
 }
 
 new App();
