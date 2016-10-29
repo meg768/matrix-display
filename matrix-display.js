@@ -90,6 +90,15 @@ var App = function() {
 		}
 	});
 
+	function runMatrix(command) {
+		if (command.important) {
+			_matrix.stop();
+			_queue.reset();
+		}
+
+		_queue.push(command);
+	}
+
 	prefixLogs();
 
 	if (cmd.log) {
@@ -109,28 +118,28 @@ var App = function() {
 	socket.on('text', function(options) {
 		console.log('Text message');
 		console.log(options);
-		_queue.push({message:'text', options:options});
+		runMatrix({message:'text', options:options});
 	});
 
 	socket.on('stop', function() {
-		_queue.reset();
-		_matrix.stop();
+//		_queue.reset();
+//		_matrix.stop();
 	});
 
 	socket.on('animation', function(options) {
-		_queue.push({message:'animation', options:options});
+		runMatrix({message:'animation', options:options});
 	});
 
 	socket.on('emoji', function(options) {
-		_queue.push({message:'emoji', options:options});
+		runMatrix({message:'emoji', options:options});
 	});
 
 	socket.on('rain', function(options) {
-		_queue.push({message:'rain', options:options});
+		runMatrix({message:'rain', options:options});
 	});
 
 	socket.on('perlin', function(options) {
-		_queue.push({message:'perlin', options:options});
+		runMatrix({message:'perlin', options:options});
 	});
 
 	socket.on('hello', function(data) {
