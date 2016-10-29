@@ -17,9 +17,15 @@ var App = function() {
 	var counter = 0;
 
 	function runText() {
-		socket.emit('text', {text:sprintf('%d', ++counter), fontSize:24, textColor:'blue'});
+		var text = sprintf('%d', ++counter);
+		console.log(text);
+		socket.emit('text', {text:text, fontSize:24, textColor:'blue'});
 
 	}
+	socket.on('disconnect', function() {
+		console.log('Disconnected');
+	};
+
 	socket.on('hello', function() {
 
 		console.log('Hello!');
