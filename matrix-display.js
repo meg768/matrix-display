@@ -9,19 +9,19 @@ var redirectLogs = require('yow').redirectLogs;
 var prefixLogs = require('yow').prefixLogs;
 var cmd = require('commander');
 var Matrix = require('hzeller-matrix');
-var matrix = new Matrix({width:32, height:32});
 var Queue = require('./scripts/queue.js');
-
 
 var App = function() {
 
 	cmd.version('1.0.0');
 	cmd.option('-l --log', 'redirect logs to file');
-	cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
+	cmd.option('-h --host <host>', 'connect to specified server', 'localhost');
 	cmd.option('-p --port <port>', 'connect to specified port (3000)', 3000);
 	cmd.parse(process.argv);
 
 	var _queue = new Queue();
+	//var _matrix = new Matrix({width:32, height:32});
+	var _matrix = undefined;
 
 	_queue.on('idle', function() {
 		console.log('Queue empty, nothing to do.');
@@ -32,33 +32,41 @@ var App = function() {
 		var message = item.message;
 		var options = item.options;
 
-		switch (message) {
-			case 'text': {
-				var text = options.text ? options.text : 'ABC 123';
+		console.log('Running', message, JSON.stringify(options));
 
-				if (options.fontName)
-					options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
+		if (_matrix) {
+			switch (message) {
+				case 'text': {
+					var text = options.text ? options.text : 'ABC 123';
 
-				matrix.runText(text, options, function() {
-					console.log('Done with text.');
+					if (options.fontName)
+						options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
+
+					matrix.runText(text, options, function() {
+						console.log('Done with text.');
+						callback();
+					});
+					break;
+				}
+				case 'perlin': {
+					matrix.runPerlin(options, callback);
+					break;
+				}
+
+				case 'rain': {
+					matrix.runPerlin(options, callback);
+					break;
+				}
+
+				default: {
+					console.log('Invalid message: ', message);
 					callback();
-				});
-				break;
-			}
-			case 'perlin': {
-				matrix.runPerlin(options, callback);
-				break;
+				}
 			}
 
-			case 'rain': {
-				matrix.runPerlin(options, callback);
-				break;
-			}
-
-			default: {
-				console.log('Invalid message: ', message);
-				callback();
-			}
+		}
+		else {
+			setTimeout(callback, 1000);
 		}
 	});
 
@@ -102,7 +110,7 @@ var App = function() {
 		socket.emit('register', options);
 	})
 
-	matrix.runText('Ready');
+	//matrix.runText('Ready');
 
 
 };
