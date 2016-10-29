@@ -128,13 +128,16 @@ var App = function() {
 		}
 	});
 
-	function runMatrix(command) {
-		if (command.important) {
-			_matrix.stop();
-			_queue.reset();
-		}
+	function runMatrix(message, options) {
+		if (options.important) {
+			_matrix.stop(function() {
+				_queue.reset();
+				_queue.push({message:message, options:options});
 
-		_queue.push(command);
+			});
+		}
+		else
+			_queue.push({message:message, options:options});
 	}
 
 	prefixLogs();
@@ -153,27 +156,24 @@ var App = function() {
 
 	console.log('Connecting to %s...', url);
 
-	socket.on('stop', function() {
-	});
-
 	socket.on('text', function(options) {
-		runMatrix({message:'text', options:options});
+		runMatrix('text', options);
 	});
 
 	socket.on('animation', function(options) {
-		runMatrix({message:'animation', options:options});
+		runMatrix('animation', options);
 	});
 
 	socket.on('emoji', function(options) {
-		runMatrix({message:'emoji', options:options});
+		runMatrix('emoji', options);
 	});
 
 	socket.on('rain', function(options) {
-		runMatrix({message:'rain', options:options});
+		runMatrix('rain', options);
 	});
 
 	socket.on('perlin', function(options) {
-		runMatrix({message:'perlin', options:options});
+		runMatrix('perlin', options);
 	});
 
 	socket.on('hello', function(data) {
