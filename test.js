@@ -24,7 +24,7 @@ var App = function() {
 	}
 	socket.on('disconnect', function() {
 		console.log('Disconnected');
-	};
+	});
 
 	socket.on('hello', function() {
 
