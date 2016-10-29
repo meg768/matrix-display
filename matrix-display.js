@@ -91,7 +91,7 @@ var App = function() {
 		redirectLogs(Path.join(path, name));
 	}
 
-	var url = sprintf('http://%s:%d/provider', cmd.host, cmd.port);
+	var url = sprintf('http://%s:%d/matrix-display-provider', cmd.host, cmd.port);
 	var socket = require('socket.io-client')(url);
 
 	console.log('Connecting to %s...', url);
