@@ -46,8 +46,11 @@ var Module = module.exports = function() {
 
 	_this.push = function(item) {
 
-		if (_queue.length > 50)
+		if (_queue.length > 50) {
+			console.log('Queue too big! Truncating...');
 			_queue = [];
+
+		}
 
 		_queue.push(item);
 		work();
