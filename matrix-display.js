@@ -148,6 +148,7 @@ var App = function() {
 
 		if (options.priority == 'high') {
 			_matrix.stop(function() {
+				_queue.reset();
 				_queue = createQueue();
 				_queue.push({message:message, options:options});
 
