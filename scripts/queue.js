@@ -36,7 +36,7 @@ var Module = module.exports = function() {
 		}
 	}
 
-	_this.clear = function() {
+	_this.reset = function() {
 		_queue = [];
 	}
 

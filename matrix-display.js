@@ -185,6 +185,7 @@ var App = function() {
 
 		_socket.on('stop', function() {
 			_matrix.stop(function() {
+				_queue.reset();
 				_queue = createQueue();
 			});
 		});
