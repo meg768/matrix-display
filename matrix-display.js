@@ -3,8 +3,10 @@
 var fs = require('fs');
 var Path = require('path');
 var mkpath = require('yow').mkpath;
+var random = require('yow').random;
 var sprintf = require('yow').sprintf;
 var isObject = require('yow').isObject;
+var isString = require('yow').isString;
 var redirectLogs = require('yow').redirectLogs;
 var prefixLogs = require('yow').prefixLogs;
 var cmd = require('commander');
@@ -112,11 +114,19 @@ var App = function() {
 				}
 
 				case 'animation': {
-					if (!options.name)
-						options.name = 'pacman';
+					var fileName = options.name;
 
-					var image = sprintf('%s/animations/%s.gif', __dirname, options.name);
-					_matrix.runAnimation(image, options, callback);
+					if (fileName == undefined) {
+						var files = fs.readdirSync(Path.join(__dirname, 'animations'));
+						fileName = random(files);
+					}
+					else {
+						fileName = sprintf('%s.gif', fileName);
+					}
+
+					fileName = sprintf('%s/animations/%s', __dirname, fileName);
+
+					_matrix.runAnimation(fileName, options, callback);
 
 					break;
 				}
