@@ -9,7 +9,7 @@ var redirectLogs = require('yow').redirectLogs;
 var prefixLogs = require('yow').prefixLogs;
 var cmd = require('commander');
 var Matrix = require('hzeller-matrix');
-var Queue = require('./scripts/queue.js');
+var Queue = require('yow').Queue;
 
 var FakeMatrix = function() {
 
