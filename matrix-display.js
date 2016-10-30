@@ -88,7 +88,7 @@ var App = function() {
 					var text = options.text ? options.text : 'ABC 123';
 
 					if (options.fontName)
-						options.fontName = sprintf('%s/%s.ttf', __dirname, options.fontName);
+						options.fontName = sprintf('%s/fonts/%s.ttf', __dirname, options.fontName);
 
 					_matrix.runText(text, options, function() {
 						console.log('Done with text.');
