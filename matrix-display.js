@@ -116,6 +116,7 @@ var App = function() {
 				case 'animation': {
 					var fileName = options.name;
 
+					// Generate a random one if not specified
 					if (fileName == undefined) {
 						var files = fs.readdirSync(sprintf('%s/animations', __dirname));
 						fileName = random(files);
@@ -127,7 +128,6 @@ var App = function() {
 					// Add path
 					fileName = sprintf('%s/animations/%s', __dirname, fileName);
 
-					console.log(fileName);
 					_matrix.runAnimation(fileName, options, callback);
 
 					break;
