@@ -17,7 +17,7 @@ var Module = module.exports = function() {
 				var item = _queue[0];
 
 				_working = true;
-				_this.emit('process', item, function() {
+				_this.emit('work', item, function() {
 					// Remove current job
 					_queue.shift();
 					_working = false;

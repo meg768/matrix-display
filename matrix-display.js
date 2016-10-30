@@ -56,16 +56,24 @@ var FakeMatrix = function() {
 
 var App = function() {
 
+	cmd.version('1.0.0');
+	cmd.option('-l --log', 'redirect logs to file');
+	cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
+	cmd.option('-p --port <port>', 'connect to specified port (3000)', 3000);
+	cmd.option('-f --fakeit', 'do not access matrix hardware', false);
+	cmd.parse(process.argv);
+
+
 	var _queue  = undefined;
 	var _matrix = undefined;
-
-
+	var _socket = undefined;
 
 	function createQueue() {
 		var queue = new Queue();
 
 		queue.on('idle', function() {
 			console.log('Queue empty, nothing to do.');
+			_socket.emit('idle');
 		});
 
 		queue.on('process', function(item, callback) {
@@ -156,13 +164,6 @@ var App = function() {
 
 	function run() {
 
-		cmd.version('1.0.0');
-		cmd.option('-l --log', 'redirect logs to file');
-		cmd.option('-h --host <host>', 'connect to specified server', 'app-o.se');
-		cmd.option('-p --port <port>', 'connect to specified port (3000)', 3000);
-		cmd.option('-f --fakeit', 'do not access matrix hardware', false);
-		cmd.parse(process.argv);
-
 		prefixLogs();
 
 		if (cmd.log) {
@@ -174,41 +175,41 @@ var App = function() {
 			redirectLogs(Path.join(path, name));
 		}
 
+		var url = sprintf('http://%s:%d/matrix-display-provider', cmd.host, cmd.port);
+
 		_queue  = createQueue();
 		_matrix = cmd.fakeit ? new FakeMatrix() : new Matrix({width:32, height:32});
-
-		var url = sprintf('http://%s:%d/matrix-display-provider', cmd.host, cmd.port);
-		var socket = require('socket.io-client')(url);
+		_socket = require('socket.io-client')(url);
 
 		console.log('Connecting to %s...', url);
 
-		socket.on('stop', function() {
+		_socket.on('stop', function() {
 			_matrix.stop(function() {
 				_queue = createQueue();
 			});
 		});
-		
-		socket.on('text', function(options) {
+
+		_socket.on('text', function(options) {
 			runMatrix('text', options);
 		});
 
-		socket.on('animation', function(options) {
+		_socket.on('animation', function(options) {
 			runMatrix('animation', options);
 		});
 
-		socket.on('emoji', function(options) {
+		_socket.on('emoji', function(options) {
 			runMatrix('emoji', options);
 		});
 
-		socket.on('rain', function(options) {
+		_socket.on('rain', function(options) {
 			runMatrix('rain', options);
 		});
 
-		socket.on('perlin', function(options) {
+		_socket.on('perlin', function(options) {
 			runMatrix('perlin', options);
 		});
 
-		socket.on('hello', function(data) {
+		_socket.on('hello', function(data) {
 			console.log('hello');
 		})
 
