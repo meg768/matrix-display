@@ -117,14 +117,16 @@ var App = function() {
 					var fileName = options.name;
 
 					if (fileName == undefined) {
-						var files = fs.readdirSync(Path.join(__dirname, 'animations'));
+						var files = fs.readdirSync(sprintf('%s/animations', __dirname));
 						fileName = random(files);
 					}
 					else {
 						fileName = sprintf('%s.gif', fileName);
 					}
 
-					fileName = Path.join(__dirname, fileName);
+					// Add path
+					fileName = sprintf('%s/animations/%s', __dirname, fileName);
+
 					console.log(fileName);
 					_matrix.runAnimation(fileName, options, callback);
 
