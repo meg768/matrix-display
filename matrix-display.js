@@ -76,7 +76,7 @@ var App = function() {
 			_socket.emit('idle');
 		});
 
-		queue.on('process', function(item, callback) {
+		queue.on('work', function(item, callback) {
 
 			var message = item.message;
 			var options = item.options;

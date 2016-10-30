@@ -22,7 +22,6 @@ var Module = module.exports = function() {
 					_queue.shift();
 					_working = false;
 
-
 					// And continue with the next, when finished
 					work();
 
@@ -37,11 +36,11 @@ var Module = module.exports = function() {
 		}
 	}
 
-	_this.reset = function() {
+	_this.clear = function() {
 		_queue = [];
 	}
 
-	_this.empty = function() {
+	_this.isEmpty = function() {
 		return _queue.length == 0;
 	}
 
@@ -51,8 +50,6 @@ var Module = module.exports = function() {
 			_queue = [];
 
 		_queue.push(item);
-
-		console.log('Size of queue is now', _queue.length);
 		work();
 
 	}
