@@ -124,8 +124,8 @@ var App = function() {
 						fileName = sprintf('%s.gif', fileName);
 					}
 
-					fileName = sprintf('%s/animations/%s', __dirname, fileName);
-
+					fileName = Path.join(__dirname, fileName);
+					console.log(fileName);
 					_matrix.runAnimation(fileName, options, callback);
 
 					break;
