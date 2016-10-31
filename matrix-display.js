@@ -134,7 +134,7 @@ var App = function() {
 				}
 
 				case 'rain': {
-					_matrix.runPerlin(options, callback);
+					_matrix.runRain(options, callback);
 					break;
 				}
 
