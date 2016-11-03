@@ -93,7 +93,6 @@ var App = function() {
 						options.fontName = sprintf('%s/fonts/%s.ttf', __dirname, options.fontName);
 
 					_matrix.runText(text, options, function() {
-						console.log('Done with text.');
 						callback();
 					});
 					break;
